@@ -63,10 +63,23 @@ public class StudentRepository {
     }
 
     public void deleteTeacherByName(String teacher) {
-        if(teacherDb.containsKey(teacher)){
-            teacherDb.remove(teacher);
+        List<String>ml=new ArrayList<>();
+        if(pairDb.containsKey(teacher))
+        {
+            ml=pairDb.get(teacher);
+        }
+        for(String movie:ml)
+        {
+            if(studentDb.containsKey(movie))
+            {
+                studentDb.remove(movie);
+            }
         }
         pairDb.remove(teacher);
+        if(teacherDb.containsKey(teacher))
+        {
+            teacherDb.remove(teacher);
+        }
 
     }
 
