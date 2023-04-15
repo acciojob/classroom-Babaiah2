@@ -63,12 +63,12 @@ public class StudentRepository {
     }
 
     public void deleteTeacherByName(String teacher) {
-        List<String>ml=new ArrayList<>();
+        List<String>studentlist=new ArrayList<>();
         if(pairDb.containsKey(teacher))
         {
-            ml=pairDb.get(teacher);
+            studentlist=pairDb.get(teacher);
         }
-        for(String movie:ml)
+        for(String movie:studentlist)
         {
             if(studentDb.containsKey(movie))
             {
@@ -84,7 +84,22 @@ public class StudentRepository {
     }
 
     public void deleteAllTeachers() {
-        teacherDb.clear();
-        pairDb.clear();
+        for(String teacher:pairDb.keySet())
+        {
+            List<String> list=new ArrayList<>();
+            list=pairDb.get(teacher);
+            for(String student:list)
+            {
+                if(teacherDb.containsKey(student))
+                {
+                    studentDb.remove(student);
+                }
+            }
+            pairDb.remove(teacher);
+        }
+        for(String teacher:teacherDb.keySet())
+        {
+            teacherDb.remove(teacher);
+        }
     }
 }
