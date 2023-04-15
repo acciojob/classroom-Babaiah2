@@ -23,34 +23,34 @@ public class StudentRepository {
     }
 
 
-    public String addStudentTeacherPair(String student, String teacher) {
+    public String addStudentTeacherPair(String studentName, String teacherName) {
 
-        if(studentDb.containsKey(student)&&teacherDb.containsKey(teacher)) {
-            List<String> list = pairDb.getOrDefault(teacher, new ArrayList<>());
-            if(list.contains(student))
+        if(studentDb.containsKey(studentName)&&teacherDb.containsKey(teacherName)) {
+            List<String> list = pairDb.getOrDefault(teacherName, new ArrayList<>());
+            if(list.contains(studentName))
                 return "Pair already exists";
             else{
-                list.add(student);
-                pairDb.put(teacher,list);
+                list.add(studentName);
+                pairDb.put(teacherName,list);
                 return "pair added";
             }
         }
         return "student or Teacher does not exist";
     }
 
-    public Student getStudentByName(String name) {
-       return studentDb.get(name);
+    public Student getStudentByName(String studentName) {
+       return studentDb.get(studentName);
     }
 
-    public Teacher getTeacherByName(String name) {
-        return teacherDb.get(name);
+    public Teacher getTeacherByName(String teacherName) {
+        return teacherDb.get(teacherName);
     }
 
-    public List<String> getStudentByTeacherName(String teacher) {
-        if(!teacherDb.containsKey(teacher))
+    public List<String> getStudentByTeacherName(String teacherName) {
+        if(!teacherDb.containsKey(teacherName))
             return null;
 
-        return pairDb.get(teacher);
+        return pairDb.get(teacherName);
 
     }
 
@@ -62,44 +62,25 @@ public class StudentRepository {
         return studentList;
     }
 
-    public void deleteTeacherByName(String teacher) {
-        List<String>studentlist=new ArrayList<>();
-        if(pairDb.containsKey(teacher))
+    public void deleteTeacherByName(String teacherName) {
+        Teacher teacher = teacherDb.get(teacherName);
+        teacherDb.remove(teacherName);
+        for(String student: pairDb.get(teacher))
         {
-            studentlist=pairDb.get(teacher);
-        }
-        for(String movie:studentlist)
-        {
-            if(studentDb.containsKey(movie))
-            {
-                studentDb.remove(movie);
-            }
+            studentDb.remove(student);
         }
         pairDb.remove(teacher);
-        if(teacherDb.containsKey(teacher))
-        {
-            teacherDb.remove(teacher);
-        }
-
     }
 
     public void deleteAllTeachers() {
-        for(String teacher:pairDb.keySet())
+        for(Teacher teacher: teacherDb.values())
         {
-            List<String> list=new ArrayList<>();
-            list=pairDb.get(teacher);
-            for(String student:list)
+            for(String student: pairDb.get(teacher))
             {
-                if(teacherDb.containsKey(student))
-                {
-                    studentDb.remove(student);
-                }
+                studentDb.remove(student);
             }
-            pairDb.remove(teacher);
         }
-        for(String teacher:teacherDb.keySet())
-        {
-            teacherDb.remove(teacher);
-        }
+        pairDb.clear();
+        teacherDb.clear();
     }
 }
