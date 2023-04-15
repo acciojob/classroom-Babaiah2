@@ -23,19 +23,17 @@ public class StudentRepository {
     }
 
 
-    public String addStudentTeacherPair(String studentName, String teacherName) {
+    public void addStudentTeacherPair(String studentName, String teacherName) {
+        List<String> studentlist = new ArrayList<>() ;
 
-        if(studentDb.containsKey(studentName)&&teacherDb.containsKey(teacherName)) {
-            List<String> list = pairDb.getOrDefault(teacherName, new ArrayList<>());
-            if(list.contains(studentName))
-                return "Pair already exists";
-            else{
-                list.add(studentName);
-                pairDb.put(teacherName,list);
-                return "pair added";
-            }
-        }
-        return "student or Teacher does not exist";
+        if(pairDb.containsKey(teacherName))
+            studentlist = pairDb.get(teacherName) ;
+
+        if(!studentlist.contains(studentName))
+            studentlist.add(studentName) ;
+
+        pairDb.put(teacherName, studentlist) ;
+
     }
 
     public Student getStudentByName(String studentName) {

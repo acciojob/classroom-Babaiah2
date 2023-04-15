@@ -12,6 +12,7 @@ public class StudentService {
     @Autowired
     StudentRepository studentRepository;
     public void addStudent(Student student) {
+
         studentRepository.addStudent(student);
     }
 
@@ -19,8 +20,8 @@ public class StudentService {
         studentRepository.addTeacher(teacher);
     }
 
-    public String addStudentTeacherPair(String student, String teacher) {
-      return  studentRepository.addStudentTeacherPair(student,teacher);
+    public void addStudentTeacherPair(String student, String teacher) {
+        studentRepository.addStudentTeacherPair(student,teacher);
     }
 
     public Student getStudentByName(String name) {
